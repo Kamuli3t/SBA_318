@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Tester</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+
+  <body>
+    <div class="container">
+        <div id="sub-container">
+        <h2>Available Paths</h2>
+        <ul>
+          <li>
+            <strong>/instructors</strong>
+            <ul>
+              <li>GET: Get all instructors</li>
+              <li>POST: Create a new instructor</li>
+            </ul>
+          </li>
+          <li>
+            <strong>/instructors/:instructorId</strong>
+            <ul>
+              <li>GET: Get an instructor by ID</li>
+              <li>PATCH: Update an instructor</li>
+              <li>DELETE: Delete an instructor</li>
+            </ul>
+          </li>
+          <li>
+            <strong>/courses</strong>
+            <ul>
+              <li>GET: Get all courses</li>
+              <li>POST: Create a new course</li>
+            </ul>
+          </li>
+          <li>
+            <strong>/courses/:courseId</strong>
+            <ul>
+              <li>GET: Get a course by ID</li>
+              <li>PATCH: Update a course</li>
+              <li>DELETE: Delete a course</li>
+            </ul>
+          </li>
+          <li>
+            <strong>/courses/:courseId/modules</strong>
+            <ul>
+              <li>GET: Get modules for a course</li>
+            </ul>
+          </li>
+          <li>
+            <strong>/modules</strong>
+            <ul>
+              <li>GET: Get all modules</li>
+              <li>POST: Create a new module</li>
+            </ul>
+          </li>
+          <li>
+            <strong>/modules/:moduleId</strong>
+            <ul>
+              <li>GET: Get a module by ID</li>
+              <li>PATCH: Update a module</li>
+              <li>DELETE: Delete a module</li>
+            </ul>
+          </li>
+          <li>
+            <strong>/departments</strong>
+            <ul>
+              <li>GET: Get a list of departments</li>
+            </ul>
+          </li>
+          <li>
+            <strong>/departments/:departmentName/modules</strong>
+            <ul>
+              <li>GET: Get modules for a specific department</li>
+            </ul>
+          </li>
+          <li>
+            <strong>/</strong>
+            <ul>
+              <li>GET: Serves the `index.html` file</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+        <div class="sub-container">
+      <h2>API Tester</h2>
+      <form id="api-form">
+        <div class="form-group">
+          <label for="path">Path:</label>
+          <input
+            type="text"
+            id="path"
+            name="path"
+            placeholder="Enter path here"
+          />
+        </div>
+        <div class="form-group">
+          <label for="method">Method:</label>
+          <select id="method" name="method">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PATCH">PATCH</option>
+            <option value="DELETE">DELETE</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="data">Data (JSON):</label>
+          <textarea
+            id="data"
+            name="data"
+            placeholder="Enter JSON data here"
+          ></textarea>
+        </div>
+        <button type="submit">Send Request</button>
+      </form>
+    </div>
+    <div id="response"></div>
+    <script>
+      document
+        .getElementById("api-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const path = document.getElementById("path").value;
+          const method = document.getElementById("method").value;
+          const data = document.getElementById("data").value;
+          const responseDiv = document.getElementById("response");
+
+          fetch(path, {
+            method: method,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: data ? data : null,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              responseDiv.innerHTML = `<pre>${JSON.stringify(
+                data,
+                null,
+                2
+              )}</pre>`;
+            })
+            .catch((error) => {
+              responseDiv.innerHTML = `<p class="error">Error: ${error}</p>`;
+            });
+        });
+    </script>
+  </body>
+</html>

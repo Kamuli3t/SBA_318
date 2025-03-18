@@ -18,6 +18,9 @@ app.use(express.json()); // No need for body-parser anymore, express 💪
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
+// Serve static files
+app.use(express.static(path.join(__dirname, "public")));
+
 //Custom middleware
 app.use((req, res, next) => {
   console.log(
@@ -35,7 +38,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.get("/", (req, res) => {
-  res.send("This is a response");
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.listen(PORT, () => {
